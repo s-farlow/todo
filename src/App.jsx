@@ -1,7 +1,16 @@
 import React, { useState , useEffect } from "react"
 
 export default function App() {
-  const [todos, setTodos] = useState([]);
+  // loads todos from localStorage
+  const [todos, setTodos] = useState(() => {
+    const saved = localStorage.getItem("todos");
+    if (saved !== null) {
+      return JSON.parse(saved);
+    } else {
+      return []
+    }
+  });
+
   const [input, setInput] = useState("");
   const [date, setDate] = useState(new Date());
   const dayOfWeekOptions = { weekday: 'long' };
@@ -11,11 +20,16 @@ export default function App() {
 
   // set date
   useEffect(() => {
-    var timer = setInterval(function() { setDate(new Date()) }, 1000);
+    var timer = setInterval(() => { 
+      setDate(new Date()) }, 1000);
     return function cleanup() {
       clearInterval(timer);
     }
   }, []);
+
+  useEffect(() => {
+    localStorage.setItem("todos", JSON.stringify(todos))
+  }, [todos]);
 
   // adds list item
   function addTodo() {
@@ -24,10 +38,10 @@ export default function App() {
     }
     setTodos([...todos, { text: input, done: false }]);
     setInput("");
-  };
+  }
 
   function toggleTodo(index) {
-    const updated = todos.map(function(todo, i) {
+    const updated = todos.map((todo, i) => {
       if (i === index) {
         return { ...todo, done: !todo.done };
       } else {
@@ -38,8 +52,9 @@ export default function App() {
   }
 
   function deleteTodo(index) {
-    setTodos(todos.filter(function(_, i) { return i !== index}));
-  };
+    setTodos(todos.filter((_, i) => { 
+      return i !== index }));
+  }
 
   return (
     <div style={{ maxWidth: 400, margin: "40px", fontFamily: "sans-serif" }}>
@@ -50,17 +65,17 @@ export default function App() {
       <div style={{ display: "flex", gap: 8 }}>
         <input
           value={input}
-          onChange={function(e) { setInput(e.target.value) }}
-          onKeyDown={function(e) { e.key === "Enter" && addTodo() }}
+          onChange={(e) => { setInput(e.target.value) }}
+          onKeyDown={(e) => { e.key === "Enter" && addTodo() }}
           placeholder="Add a task..."
           style={{ flex: 1, padding: 8 }}
         />
         <button onClick={addTodo}>Add</button>
-        <button onClick={function() { setTodos([]) }}>Delete All</button>
+        <button onClick={() => { setTodos([]) }}>Delete All</button>
       </div>
 
       <ul style={{ listStyle: "none", padding: 0, marginTop: 16 }}>
-        {todos.map(function(todo, i) {
+        {todos.map((todo, i) => {
           // strikethough completed todo
           if (todo.done) {
             textDecoration = "line-through";
@@ -77,12 +92,12 @@ export default function App() {
             <input
               type="checkbox"
               checked={todo.done}
-              onChange={function() { toggleTodo(i) }}
+              onChange={() => { toggleTodo(i) }}
             />
             <span style={{ flex: 1, textDecoration, color }}>
               {todo.text}
             </span>
-            <button onClick={function() { deleteTodo(i) }}>Delete</button>
+            <button onClick={() => { deleteTodo(i) }}>Delete</button>
           </li>
         })}
       </ul>
