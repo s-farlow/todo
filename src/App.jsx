@@ -7,7 +7,7 @@ import "react-datepicker/dist/react-datepicker-cssmodules.css";
 import { LuCalendarDays } from "react-icons/lu";
 
 const CustomDateInput = React.forwardRef(({ onClick }, ref) => (
-  <button onClick={onClick} ref={ref} style={{ background: "none", border: "1px solid black", cursor: "pointer", fontSize: 25 }}>
+  <button onClick={onClick} ref={ref} style={{ backgroundColor: "#35353552", cursor: "pointer", fontSize: 25, padding: "5px", paddingLeft: "15px", paddingRight:"15px" }}>
     <LuCalendarDays />
   </button>
 ));
@@ -79,11 +79,11 @@ export default function App() {
 
   return (
     <div style={{ maxWidth: 400, margin: "40px", fontFamily: "sans-serif" }}>
-      <h1 style={{textAlign: "center", textDecorationLine: "underline", marginBottom: "0px"}}>To-Do List</h1>
-      <p style={{textAlign: "center", fontSize: "20px", marginTop: "20px", marginBottom: "0px"}}>Today's Date:</p>
-      <p style={{textAlign: "center", fontSize: "25px", marginTop: "0px", marginBottom: "50px"}}>{formattedDayOfWeek}, {date.toLocaleDateString()}</p>
+      <h1 style={{textAlign: "center", textDecorationLine: "underline", marginBottom: "0px"}}>TO-DO</h1>
+      <p style={{textAlign: "center", fontSize: "20px", marginTop: "20px", marginBottom: "0px", fontFamily: "serif", font: "bold"}}>Today's Date:</p>
+      <p style={{textAlign: "center", fontSize: "25px", marginTop: "0px", marginBottom: "50px", fontFamily: "serif", font: "bold"}}>{formattedDayOfWeek}, {date.toLocaleDateString()}</p>
 
-      <div style={{ display: "flex", gap: 4 }}>
+      <div style={{ display: "flex", gap: 4, justifyContent: "center" }}>
         <input
           value={input}
           onChange={(e) => { setInput(e.target.value) }}
@@ -96,21 +96,21 @@ export default function App() {
           onChange={(date) => {setTaskDate(date)}}
           customInput={<CustomDateInput />}
         />
-        <button onClick={addTodo}>Add</button>
+        <button onClick={addTodo}>ADD</button>
       </div>
       
       {/* Button control */}
       <div style={{ display: "flex", margin: "20px", gap: 8, justifyContent: "center" }}>
-        <button onClick={() => { setTodos([]) }}>Delete All</button>
-        {completed.length > 0 && <button onClick={clearCompleted}>Clear Completed</button>}
+        <button onClick={() => { setTodos([]) }}>DELETE ALL</button>
+        {completed.length > 0 && <button onClick={clearCompleted}>CLEAR COMPLETED</button>}
       </div>
 
       {/* Create count for completed tasks. */}
-      <div style={{textAlign: "center", fontSize: 16, color: "white "}}>
-        <p> {completed.length} out of {todos.length} tasks completed.</p>
+      <div style={{textAlign: "right", fontSize: 14, fontFamily: "monospace", color: "white"}}>
+        <p> COMPLETED: {completed.length} / {todos.length}</p>
       </div>
 
-      <ul style={{ listStyle: "none", padding: 0, marginTop: 16 }}>
+      <ul style={{ listStyle: "none", fontFamily: "serif", padding: 0, marginTop: 16, justifyContent: "center" }}>
         {todos.map((todo, i) => {
           // strikethough completed todo
           if (todo.done) {
@@ -139,7 +139,7 @@ export default function App() {
                 {new Date(todo.dueDate).toLocaleDateString()}
               </span>}
             </span>
-            <button onClick={() => { deleteTodo(i) }}>Delete</button>
+            <button style={{ backgroundColor: "#47474752"}} onClick={() => { deleteTodo(i) }}>DELETE</button>
           </li>
         })}
       </ul>
