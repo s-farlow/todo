@@ -10,7 +10,6 @@ export default function App() {
       return []
     }
   });
-
   const [input, setInput] = useState("");
   const [date, setDate] = useState(new Date());
   const dayOfWeekOptions = { weekday: 'long' };
@@ -27,6 +26,7 @@ export default function App() {
     }
   }, []);
 
+  // adds todos to localStorage
   useEffect(() => {
     localStorage.setItem("todos", JSON.stringify(todos))
   }, [todos]);
@@ -56,6 +56,8 @@ export default function App() {
       return i !== index }));
   }
 
+  const completed = todos.filter((todo) => { return todo.done }).length;
+
   return (
     <div style={{ maxWidth: 400, margin: "40px", fontFamily: "sans-serif" }}>
       <h1 style={{textAlign: "center", textDecorationLine: "underline", marginBottom: "0px"}}>To-Do List</h1>
@@ -72,6 +74,11 @@ export default function App() {
         />
         <button onClick={addTodo}>Add</button>
         <button onClick={() => { setTodos([]) }}>Delete All</button>
+      </div>
+
+      {/* Create count for completed tasks. */}
+      <div>
+        <p> {completed} out of {todos.length} tasks completed.</p>
       </div>
 
       <ul style={{ listStyle: "none", padding: 0, marginTop: 16 }}>
