@@ -26,6 +26,7 @@ export default function App() {
   const [date, setDate] = useState(new Date());
   const [taskDate, setTaskDate] = useState(null);
   const dayOfWeekOptions = { weekday: 'long' };
+  const dayOfWeekShort = { weekday: 'short' };
   const formattedDayOfWeek = date.toLocaleDateString(undefined, dayOfWeekOptions);
   var textDecoration;
   var color;
@@ -79,7 +80,7 @@ export default function App() {
 
   return (
     <div style={{ maxWidth: 400, margin: "40px", fontFamily: "sans-serif" }}>
-      <h1 style={{textAlign: "center", textDecorationLine: "underline", marginBottom: "0px"}}>TO-DO</h1>
+      <h1 style={{textAlign: "center", textDecorationLine: "underline", textDecorationThickness: "1.5px", textDecorationColor: "#eeeeee", marginBottom: "0px"}}>TO-DO</h1>
       <p style={{textAlign: "center", fontSize: "20px", marginTop: "20px", marginBottom: "0px", fontFamily: "serif", font: "bold"}}>Today's Date:</p>
       <p style={{textAlign: "center", fontSize: "25px", marginTop: "0px", marginBottom: "50px", fontFamily: "serif", font: "bold"}}>{formattedDayOfWeek}, {date.toLocaleDateString()}</p>
 
@@ -127,6 +128,7 @@ export default function App() {
           const isOverdue = todo.dueDate && !todo.done && 
             new Date(todo.dueDate).toDateString() !== new Date().toDateString() && 
             new Date(todo.dueDate) < new Date();
+          const shortDayOfWeek = new Date(todo.dueDate).toLocaleDateString(undefined, dayOfWeekShort);
           return <li key={i} style={{ display: "flex", alignItems: "center", gap: 8, marginBottom: 8 }}>
             <input
               type="checkbox"
@@ -136,7 +138,7 @@ export default function App() {
             <span style={{ flex: 1, fontSize: 20, textDecoration, color }}>
               {todo.text}
               {todo.dueDate && <span style={{ display: "inline-block", marginLeft: "10px", fontSize: 12, color: isOverdue ? "red" : "#aaa" }}>
-                {new Date(todo.dueDate).toLocaleDateString()}
+                {shortDayOfWeek}, {new Date(todo.dueDate).toLocaleDateString()}
               </span>}
             </span>
             <button style={{ backgroundColor: "#47474752"}} onClick={() => { deleteTodo(i) }}>DELETE</button>

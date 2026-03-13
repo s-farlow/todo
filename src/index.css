@@ -5,7 +5,7 @@
 
   color-scheme: light dark;
   color: rgba(255, 255, 255, 0.87);
-  background-color: #242424;
+  background-color: #2b2b2b;
 
   font-synthesis: none;
   text-rendering: optimizeLegibility;
@@ -57,11 +57,12 @@ input {
   border-top: none;
   border-left: none;
   border-right: none;
-  border-bottom: solid #eeeeee 1px;
+  border-bottom: solid #eeeeee 1.5px;
   font: bold; 
   font-family: monospace;
   font-size: 16;
   padding: 3px 10px;
+  transition: border-color 0.32s;
 }
 
 input:hover {
