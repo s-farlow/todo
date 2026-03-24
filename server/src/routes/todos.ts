@@ -20,7 +20,7 @@ const CreateTodoSchema = z.object({
 // allow for optional fields
 const UpdateTodoSchema = CreateTodoSchema.partial();
 
-// GET /api/todos; fetch all todos
+// GET /api/todos - fetch all tasks
 router.get("/", (_req: Request, res: Response) => {
     try {
         const db = getDB();
@@ -37,7 +37,7 @@ router.get("/", (_req: Request, res: Response) => {
     }
 });
 
-// POST /api/todos; create a new todo
+// POST /api/todos - create a new task
 router.post("/", (req: Request, res: Response) => {
     try {
         // check for type-safe data
@@ -67,7 +67,7 @@ router.post("/", (req: Request, res: Response) => {
     }
 });
 
-// PATCH /api/todos/:id; update a todo
+// PATCH /api/todos/:id - update a task
 router.patch("/:id", (req: Request, res: Response) => {
     try {
         const id = parseInt(req.params.id);
@@ -103,7 +103,7 @@ router.patch("/:id", (req: Request, res: Response) => {
     }
 });
 
-// DELETE /api/todos/:id; delete a single todo
+// DELETE /api/todos/:id; delete a single task
 router.delete("/:id", (req: Request, res: Response) => {
     try {
         const id = parseInt(req.params.id);
@@ -116,7 +116,7 @@ router.delete("/:id", (req: Request, res: Response) => {
     }
 });
 
-// DELETE /api/todos; delete all todos
+// DELETE /api/todos; delete all tasks
 router.delete("/", (_req: Request, res: Response) => {
     try {
         const db = getDB();
