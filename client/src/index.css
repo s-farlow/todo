@@ -34,6 +34,7 @@ li {
   padding: 3px 10px;
   font: bold;
 }
+
 body {
   margin: 0;
   display: flex;
@@ -87,6 +88,7 @@ button {
 button:hover {
   border-color: #646cff;
 }
+
 button:focus,
 button:focus-visible {
   outline: 4px auto -webkit-focus-ring-color;

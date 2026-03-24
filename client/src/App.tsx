@@ -4,6 +4,7 @@ import React, { useState, useEffect } from "react";
 import DatePicker from "react-datepicker";
 import { LuCalendarDays } from "react-icons/lu";
 import "react-datepicker/dist/react-datepicker.css";
+import { AnimatePresence, motion } from "framer-motion";
 
 // import Redux store
 import { useAppDispatch, useAppSelector } from "./store/hooks";
@@ -28,7 +29,13 @@ const CustomDateInput = React.forwardRef<HTMLButtonElement, { onClick?: () => vo
 
 export default function App() {
   const dispatch = useAppDispatch();
-  const todos = useAppSelector((state) => state.todos.items);
+  const todos = useAppSelector((state) => {
+    const items = state.todos.items;
+    return [...items].sort((a, b) => {
+      if (a.done === b.done) return 0;
+      return a.done ? 1 : -1;
+    });
+  });
   const status = useAppSelector((state) => state.todos.status);
   const error = useAppSelector((state) => state.todos.error);
 
@@ -117,35 +124,39 @@ export default function App() {
 
       {/* Todo list */}
       <ul style={{ listStyle: "none", fontFamily: "serif", padding: 0, marginTop: 16, justifyContent: "center" }}>
-        {todos.map((todo: Todo) => {
-          const textDecoration = todo.done ? "line-through" : "none";
-          const color = todo.done ? "#aaa" : "white";
-          const isOverdue =
-            todo.due_date &&
-            !todo.done &&
-            new Date(todo.due_date).toDateString() !== new Date().toDateString() &&
-            new Date(todo.due_date) < new Date();
-          const shortDayOfWeek = todo.due_date
-            ? new Date(todo.due_date).toLocaleDateString(undefined, dayOfWeekShort)
-            : null;
+        <AnimatePresence>
+          {todos.map((todo: Todo) => {
+            const textDecoration = todo.done ? "line-through" : "none";
+            const color = todo.done ? "#aaa" : "white";
+            const isOverdue =
+              todo.due_date &&
+              !todo.done &&
+              new Date(todo.due_date).toDateString() !== new Date().toDateString() &&
+              new Date(todo.due_date) < new Date();
+            const shortDayOfWeek = todo.due_date
+              ? new Date(todo.due_date).toLocaleDateString(undefined, dayOfWeekShort)
+              : null;
 
-          return (<li key={todo.id} style={{ display: "flex", alignItems: "center", gap: 8, marginBottom: 8 }}>
-            <input
-              type="checkbox"
-              checked={Boolean(todo.done)}
-              onChange={() => dispatch(toggleTodo(todo))}
-            />
-            <span style={{ flex: 1, fontSize: 20, textDecoration, color }}>
-              {todo.text}
-              {todo.due_date && (<span style={{ display: "inline-block", marginLeft: "10px", fontSize: 12, color: isOverdue ? "red" : "#aaa" }}>
-                {shortDayOfWeek}, {new Date(todo.due_date).toLocaleDateString()}
+            return (
+            <motion.li key={todo.id} layout initial={{ opacity: 0, y: -10 }} animate={{ opacity: 1, y: 0 }} exit={{ opacity: 0, x: -20 }} transition={{ duration: 0.25 }} 
+            style={{ display: "flex", alignItems: "center", gap: 8, marginBottom: 8 }}>
+              <input
+                type="checkbox"
+                checked={Boolean(todo.done)}
+                onChange={() => dispatch(toggleTodo(todo))}
+              />
+              <span style={{ flex: 1, fontSize: 20, textDecoration, color }}>
+                {todo.text}
+                {todo.due_date && (<span style={{ display: "inline-block", marginLeft: "10px", fontSize: 12, color: isOverdue ? "red" : "#aaa" }}>
+                  {shortDayOfWeek}, {new Date(todo.due_date).toLocaleDateString()}
+                </span>
+                )}
               </span>
-              )}
-            </span>
-            <button style={{ backgroundColor: "#47474752" }} onClick={() => dispatch(deleteTodo(todo.id))}>DELETE</button>
-          </li>
-          );
-        })}
+              <button style={{ backgroundColor: "#47474752" }} onClick={() => dispatch(deleteTodo(todo.id))}>DELETE</button>
+            </motion.li>
+            );
+          })}
+        </AnimatePresence>
       </ul>
     </div>
   );
