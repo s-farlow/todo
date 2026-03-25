@@ -2,7 +2,7 @@
 // Author: Sydney Farlow
 import React, { useState, useEffect } from "react";
 import DatePicker from "react-datepicker";
-import { LuCalendarDays } from "react-icons/lu";
+import { LuCalendarDays, LuClock3 } from "react-icons/lu";
 import "react-datepicker/dist/react-datepicker.css";
 import { AnimatePresence, motion } from "framer-motion";
 
@@ -21,7 +21,7 @@ import type { Todo } from "./types/todo";
 // get icon for date-picker
 const CustomDateInput = React.forwardRef<HTMLButtonElement, { onClick?: () => void }>(
   ({ onClick }, ref) => (
-    <button onClick={onClick} ref={ref} style={{ backgroundColor: "#35353552", cursor: "pointer", fontSize: 25, padding: "5px", paddingLeft: "15px", paddingRight: "15px" }}>
+    <button onClick={onClick} ref={ref} style={{ backgroundColor: "#35353552", cursor: "pointer", fontSize: 25, padding: "10px 10px 5px" }}>
       <LuCalendarDays />
     </button>
   )
@@ -42,6 +42,15 @@ export default function App() {
   const [input, setInput] = useState("");
   const [taskDate, setTaskDate] = useState<Date | null>(null);
   const [date, setDate] = useState(new Date());
+  const [timePicker, setTimePicker] = useState(false);
+  const [taskHr, setTaskHr] = useState("12");
+  const [taskMin, setTaskMin] = useState("00");
+  const [taskAmPm, setTaskAmPm] = useState("AM");
+  
+  const zeroToSixty: string[] = Array.from({ length: 61 }, (_, i) => {
+    return i.toString().padStart(2, '0');
+  });
+
 
   const dayOfWeekOptions: Intl.DateTimeFormatOptions = { weekday: "long" };
   const dayOfWeekShort: Intl.DateTimeFormatOptions = { weekday: "short" };
@@ -61,14 +70,23 @@ export default function App() {
   // add a task using the Redux store
   function handleAddTodo() {
     if (input.trim() === "") return;
+    const hasTime = timePicker;
+    const isDate = taskDate ? taskDate.toISOString().split("T")[0] : hasTime ? new Date().toISOString().split("T")[0] : null;
+    const isTime = hasTime ? `${taskHr}:${taskMin} ${taskAmPm}` : null;
+    
     dispatch(
       addTodo({
         text: input,
-        due_date: taskDate ? taskDate.toISOString().split("T")[0] : null,
+        due_date: isDate,
+        due_time: isTime
       })
     );
     setInput("");
     setTaskDate(null);
+    setTimePicker(false);
+    setTaskHr("12");
+    setTaskMin("00");
+    setTaskAmPm("AM");
   }
 
   // create an array of completed tasks
@@ -77,17 +95,17 @@ export default function App() {
   const completedIds = completed.map((todo) => todo.id);
 
   return (
-    <div style={{ maxWidth: 400, margin: "40px", fontFamily: "sans-serif" }}>
+    <div className="app-container" style={{ fontFamily: "sans-serif" }}>
       <h1 style={{ textAlign: "center", textDecorationLine: "underline", textDecorationThickness: "1.5px", textDecorationColor: "#eeeeee", marginBottom: "0px" }}>TO-DO</h1>
       <p style={{ textAlign: "center", fontSize: "20px", marginTop: "20px", marginBottom: "0px", fontFamily: "serif" }}>Today's Date:</p>
       <p style={{ textAlign: "center", fontSize: "25px", marginTop: "0px", marginBottom: "50px", fontFamily: "serif", font: "bold" }}>{formattedDayOfWeek}, {date.toLocaleDateString()}</p>
 
       {/* Task input */}
-      <div style={{ display: "flex", gap: 4, justifyContent: "center" }}>
+      <div className="input-row">
         <input
           value={input}
-          onChange={(t) => setInput(t.target.value)}
-          onKeyDown={(t) => t.key === "Enter" && handleAddTodo()}
+          onChange={(i) => setInput(i.target.value)}
+          onKeyDown={(i) => i.key === "Enter" && handleAddTodo()}
           placeholder="ADD A TASK..."
           style={{ padding: 8 }}
         />
@@ -96,11 +114,93 @@ export default function App() {
           onChange={(d: Date | null) => setTaskDate(d)}
           customInput={<CustomDateInput />}
         />
+        <button
+          onClick={() => setTimePicker(!timePicker)}
+          style={{
+            backgroundColor: "#35353552",
+            cursor: "pointer",
+            fontSize: 25,
+            padding: "10px 10px 5px",
+          }}
+          aria-label="Toggle time picker">
+          <LuClock3 />
+        </button>
         <button onClick={handleAddTodo}>ADD</button>
       </div>
 
+      {/* Time pick drop down */}
+      {timePicker && (
+        <div
+          style={{
+            display: "flex",
+            gap: 8,
+            justifyContent: "center",
+            marginTop: 10,
+            alignItems: "center",
+          }}
+        >
+          <select
+            value={taskHr}
+            onChange={(e) => setTaskHr(e.target.value)}
+            style={{
+              backgroundColor: "#1a1a1a",
+              color: "#eeeeee",
+              border: "1.75px solid #1a1a1a",
+              borderRadius: 8,
+              padding: "4px 8px",
+              fontFamily: "monospace",
+              fontSize: 14,
+              cursor: "pointer"
+            }}>
+            {Array.from({ length: 12 }, (_, i) => {
+              const hour = String(i + 1);
+              return <option key={hour} value={hour}>{hour}</option>;
+            })}
+          </select>
+
+          <span style={{ color: "#eeeeee", fontFamily: "monospace", fontSize: 18 }}>:</span>
+
+          <select
+            value={taskMin}
+            onChange={(e) => setTaskMin(e.target.value)}
+            style={{
+              backgroundColor: "#1a1a1a",
+              color: "#eeeeee",
+              border: "1.75px solid #1a1a1a",
+              borderRadius: 8,
+              padding: "4px 8px",
+              fontFamily: "monospace",
+              fontSize: 14,
+              cursor: "pointer",
+            }}
+          >
+            {zeroToSixty.map((m) => (
+              <option key={m} value={m}>{m}</option>
+            ))}
+          </select>
+
+          <select
+            value={taskAmPm}
+            onChange={(e) => setTaskAmPm(e.target.value)}
+            style={{
+              backgroundColor: "#1a1a1a",
+              color: "#eeeeee",
+              border: "1.75px solid #1a1a1a",
+              borderRadius: 8,
+              padding: "4px 8px",
+              fontFamily: "monospace",
+              fontSize: 14,
+              cursor: "pointer",
+            }}
+          >
+            <option value="AM">AM</option>
+            <option value="PM">PM</option>
+          </select>
+        </div>
+      )}
+
       {/* Button controls */}
-      <div style={{ display: "flex", margin: "20px", gap: 8, justifyContent: "center" }}>
+      <div className="button-row">
         <button onClick={() => dispatch(deleteAllTodos())}>DELETE ALL</button>
         {completed.length > 0 && (
           <button onClick={() => dispatch(clearCompleted(completedIds))}>
@@ -148,7 +248,7 @@ export default function App() {
               <span style={{ flex: 1, fontSize: 20, textDecoration, color }}>
                 {todo.text}
                 {todo.due_date && (<span style={{ display: "inline-block", marginLeft: "10px", fontSize: 12, color: isOverdue ? "red" : "#aaa" }}>
-                  {shortDayOfWeek}, {new Date(todo.due_date).toLocaleDateString()}
+                  {shortDayOfWeek}, {new Date(todo.due_date).toLocaleDateString()} {todo.due_time && ` at ${todo.due_time}`}
                 </span>
                 )}
               </span>

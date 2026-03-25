@@ -106,3 +106,52 @@ button:focus-visible {
     background-color: #f9f9f9;
   }
 }
+
+/* ---- Responsive Layout ---- */
+
+.app-container {
+  max-width: 400px;
+  width: 100%;
+  margin: 40px auto;
+  padding: 0 16px;
+  box-sizing: border-box;
+}
+
+.input-row {
+  display: flex;
+  gap: 4px;
+  justify-content: center;
+  flex-wrap: wrap;
+}
+
+.button-row {
+  display: flex;
+  margin: 20px 0;
+  gap: 8px;
+  justify-content: center;
+  flex-wrap: wrap;
+}
+
+@media (max-width: 480px) {
+  .app-container {
+    margin: 20px auto;
+    padding: 0 12px;
+  }
+
+  h1 {
+    font-size: 2.4em;
+    line-height: 1.1;
+    font: bold; 
+    font-family: serif;
+  }
+
+  input[type="text"],
+  input:not([type="checkbox"]) {
+    width: 100%;
+  }
+
+  button {
+    font-size: 12px;
+    padding: 0.5em 0.9em;
+  }
+}

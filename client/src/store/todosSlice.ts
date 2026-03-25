@@ -27,7 +27,7 @@ export const fetchTodos = createAsyncThunk("todos/fetchAll", async () => {
 // add tasks to list - POST
 export const addTodo = createAsyncThunk(
   "todos/add",
-  async (payload: { text: string; due_date: string | null }) => {
+  async (payload: { text: string; due_date: string | null; due_time: string | null }) => {
     const res = await fetch("/api/todos", {
       method: "POST",
       headers: { "Content-Type": "application/json" },
@@ -35,7 +35,7 @@ export const addTodo = createAsyncThunk(
         text: payload.text,
         done: false,
         due_date: payload.due_date,
-        due_time: null,
+        due_time: payload.due_time,
         priority: "medium",
         order_index: 0,
       }),

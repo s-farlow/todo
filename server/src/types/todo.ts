@@ -5,8 +5,8 @@ export interface Todo {
   done: boolean;
   due_date: string | null;
   due_time: string | null; //alloq for a time-picker
-  priority: "low" | "medium" | "high"; // allow for task priority
-  order_index: number; // allow for (potential) drag-and-drop in future dev
+  priority: "low" | "medium" | "high"; // allow for task priority [TO BE ADDED]
+  order_index: number; // allow for (potential) drag-and-drop in future dev [TO BE ADDED]
   created_at: string;
 }
 
