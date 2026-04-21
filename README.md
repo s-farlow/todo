@@ -59,10 +59,12 @@ my-app/
 
 ### How To Run the App
 
+
 From the root, run both the servers simultaneously:
 ```bash
 npm run dev
 ```
+
 
 Or separately in seperate terminal windows:
 
@@ -75,6 +77,7 @@ Terminal 2 — Frontend [http://localhost:5173](http://localhost:5173)
 ```bash
 cd client && npm run dev
 ```
+
 
 Then open  [http://localhost:5173](http://localhost:5173) in your browser.
 
