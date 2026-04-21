@@ -65,11 +65,13 @@ npm run dev
 ```
 
 Or separately in seperate terminal windows:
+Terminal 1 — Backend [http://localhost:3001](http://localhost:3001)
 ```bash
-# Terminal 1 — Backend (http://localhost:3001)
 cd server && npm run dev
+```
 
-# Terminal 2 — Frontend (http://localhost:5173)
+Terminal 2 — Frontend [http://localhost:5173](http://localhost:5173)
+```bash
 cd client && npm run dev
 ```
 
