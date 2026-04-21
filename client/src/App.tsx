@@ -10,7 +10,7 @@ import { AnimatePresence, motion } from "framer-motion";
 import { useAppDispatch, useAppSelector } from "./store/hooks";
 import {
   fetchTodos,
-  addTodo,
+  addTodo, // test comment
   toggleTodo,
   deleteTodo,
   deleteAllTodos,
