@@ -82,7 +82,7 @@ cd client && npm run dev
 Then open  [http://localhost:5173](http://localhost:5173) in your browser.
 
 ## Potential Future Additions
-- [] Add CSS module declaration file
-- [] Drag and Drop Reordering
-- [] User Authentication
-- [] Menu/Navigation + Multiple Tabs for task organization
+- [ ] Add CSS module declaration file
+- [ ] Drag and Drop Reordering
+- [ ] User Authentication
+- [ ] Menu/Navigation + Multiple Tabs for task organization
