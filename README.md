@@ -82,7 +82,8 @@ cd client && npm run dev
 Then open  [http://localhost:5173](http://localhost:5173) in your browser.
 
 ## Potential Future Additions
-- [ ] Add CSS module declaration file
+- [x] Add CSS module declaration file
+- [ ] Fix timePicker overriding datePicker
 - [ ] Drag and Drop Reordering
 - [ ] User Authentication
 - [ ] Menu/Navigation + Multiple Tabs for task organization
